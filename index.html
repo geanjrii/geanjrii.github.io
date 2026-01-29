@@ -47,7 +47,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: #10131a;
+      background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -55,6 +55,7 @@
       z-index: 9999;
       opacity: 1;
       transition: opacity 0.5s ease-out;
+      overflow: hidden;
     }
     
     #splash-screen.fade-out {
@@ -62,91 +63,238 @@
       pointer-events: none;
     }
     
+    #stars-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+    
     .intro-container {
       text-align: center;
       position: relative;
       width: 90%;
-      max-width: 600px;
+      max-width: 900px;
+      z-index: 2;
+    }
+      filter: blur(60px);
+      animation: nebulaFloat 15s ease-in-out infinite;
     }
     
-    .greeting {
+    @keyframes nebulaFloat {
+      0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.3; }
+      33% { transform: translate(50px, -30px) scale(1.1); opacity: 0.5; }
+      66% { transform: translate(-30px, 40px) scale(0.9); opacity: 0.4; }
+    }
+    
+    .intro-container {
+      text-align: center;
+      position: relative;
+      width: 90%;
+      max-width: 900px;
+    }
+    
+    .portfolio-text {
       font-family: 'Courier New', 'Consolas', 'Monaco', monospace;
-      color: #a9c7ff;
-      font-size: 14px;
-      margin-bottom: 20px;
-      opacity: 0;
-      animation: fadeIn 0.3s ease-out forwards;
-      font-weight: normal;
-    }
-    
-    .loading-lines {
-      font-family: 'Courier New', 'Consolas', 'Monaco', monospace;
-      color: #8b919f;
-      font-size: 14px;
-      text-align: left;
-      margin: 20px 0;
-      line-height: 1.8;
-      font-weight: normal;
-    }
-    
-    .loading-lines div {
-      opacity: 0;
-      margin: 4px 0;
-    }
-    
-    .success {
-      color: #4caf50;
-    }
-    
-    .name {
-      font-family: 'Courier New', 'Consolas', 'Monaco', monospace;
-      font-size: 42px;
+      font-size: 96px;
       font-weight: bold;
       color: #f0b0ff;
-      margin: 20px 0 10px 0;
-      opacity: 1;
+      letter-spacing: 12px;
+      margin: 0;
       display: flex;
-      align-items: center;
       justify-content: center;
-      min-height: 55px;
-      letter-spacing: 2px;
+      align-items: center;
+      filter: drop-shadow(0 0 40px rgba(240, 176, 255, 1)) 
+              drop-shadow(0 0 60px rgba(169, 199, 255, 0.8))
+              drop-shadow(0 0 80px rgba(174, 199, 247, 0.6));
+      animation: textPulse 3s ease-in-out infinite, float 6s ease-in-out infinite;
     }
     
-    .name span {
+    .portfolio-text::before {
+      content: attr(data-text);
+      position: absolute;
+      background: linear-gradient(45deg, 
+        #8b5cf6, #ec4899, #3b82f6, #06b6d4, 
+        #a855f7, #6366f1, #8b5cf6, #ec4899);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradientShift 3s ease infinite;
+    }
+    
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    
+    @keyframes textPulse {
+      0%, 100% { 
+        transform: scale(1);
+        filter: drop-shadow(0 0 40px rgba(240, 176, 255, 1)) 
+                drop-shadow(0 0 60px rgba(169, 199, 255, 0.8))
+                drop-shadow(0 0 80px rgba(174, 199, 247, 0.6));
+      }
+      50% { 
+        transform: scale(1.05);
+        filter: drop-shadow(0 0 60px rgba(240, 176, 255, 1)) 
+                drop-shadow(0 0 90px rgba(169, 199, 255, 1))
+                drop-shadow(0 0 120px rgba(174, 199, 247, 0.8));
+      }
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    .portfolio-text span {
       display: inline-block;
       opacity: 0;
+      transform: scale(0) rotate(360deg);
+      animation-fill-mode: forwards;
     }
     
-    .title {
+    @keyframes letterPop {
+      0% {
+        opacity: 0;
+        transform: scale(0) rotate(360deg);
+      }
+      50% {
+        transform: scale(1.3) rotate(180deg);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+      }
+    }
+    
+    .glow-effect {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      filter: blur(120px);
+      animation: pulse 6s ease-in-out infinite, rotate 30s linear infinite;
+      pointer-events: none;
+      opacity: 0.4;
+    }
+    
+    .glow-1 {
+      top: -250px;
+      left: -250px;
+      background: radial-gradient(circle, rgba(139, 92, 246, 0.6), rgba(168, 85, 247, 0.3), transparent);
+      animation-delay: 0s;
+    }
+    
+    .glow-2 {
+      bottom: -250px;
+      right: -250px;
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.6), rgba(6, 182, 212, 0.3), transparent);
+      animation-delay: 3s;
+    }
+    
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+        opacity: 0.6;
+      }
+      50% {
+        transform: scale(1.3);
+        opacity: 0.9;
+      }
+    }
+    
+    @keyframes rotate {
+      0% { transform: rotate(0deg) scale(1); }
+      50% { transform: rotate(180deg) scale(1.2); }
+      100% { transform: rotate(360deg) scale(1); }
+    }
+    
+    .underline {
+      width: 0;
+      height: 5px;
+      background: linear-gradient(90deg, 
+        transparent, 
+        #8b5cf6, #3b82f6, #06b6d4, #ec4899, 
+        #3b82f6, #8b5cf6, 
+        transparent);
+      background-size: 200% 100%;
+      margin: 30px auto;
+      box-shadow: 0 0 30px rgba(139, 92, 246, 0.8),
+                  0 0 50px rgba(59, 130, 246, 0.6);
+      animation: underlineGlow 3s ease-in-out infinite;
+    }
+    
+    @keyframes underlineGlow {
+      0%, 100% {
+        box-shadow: 0 0 30px rgba(139, 92, 246, 0.8),
+                    0 0 50px rgba(59, 130, 246, 0.6);
+        background-position: 0% center;
+      }
+      50% {
+        box-shadow: 0 0 50px rgba(139, 92, 246, 1),
+                    0 0 80px rgba(59, 130, 246, 0.9);
+        background-position: 100% center;
+      }
+    }
+    
+    .subtitle {
       font-family: 'Courier New', 'Consolas', 'Monaco', monospace;
-      color: #aec7f7;
-      font-size: 16px;
-      font-weight: normal;
+      color: #3b82f6;
+      font-size: 24px;
+      font-weight: bold;
       opacity: 0;
+      letter-spacing: 8px;
+      margin-top: 40px;
+      text-shadow: 0 0 15px rgba(59, 130, 246, 1),
+                   0 0 30px rgba(59, 130, 246, 0.8),
+                   0 0 45px rgba(139, 92, 246, 0.6),
+                   0 0 60px rgba(168, 85, 247, 0.4);
+      animation: neonGlow 2s ease-in-out infinite alternate;
     }
     
-    .cursor {
-      display: inline-block;
-      width: 2px;
-      height: 40px;
-      background: #a9c7ff;
-      margin-left: 8px;
-      animation: blink 1s step-end infinite;
-      opacity: 0;
+    @keyframes neonGlow {
+      from {
+        text-shadow: 0 0 15px rgba(59, 130, 246, 1),
+                     0 0 30px rgba(59, 130, 246, 0.8),
+                     0 0 45px rgba(139, 92, 246, 0.6),
+                     0 0 60px rgba(168, 85, 247, 0.4);
+      }
+      to {
+        text-shadow: 0 0 20px rgba(99, 102, 241, 1),
+                     0 0 40px rgba(99, 102, 241, 1),
+                     0 0 60px rgba(139, 92, 246, 0.9),
+                     0 0 80px rgba(168, 85, 247, 0.6);
+      }
     }
     
-    .code-line {
-      font-family: 'Courier New', 'Consolas', 'Monaco', monospace;
-      color: #8b919f;
-      font-size: 14px;
-      text-align: center;
-      margin-top: 15px;
+    .sparkle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: white;
+      border-radius: 50%;
       opacity: 0;
-      font-weight: normal;
+      animation: sparkleAnim 1s ease-out;
     }
     
-    .code-comment {
-      color: #8b919f;
+    @keyframes sparkleAnim {
+      0% {
+        opacity: 0;
+        transform: scale(0);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.5);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(0);
+      }
     }
     
     @keyframes fadeIn {
@@ -176,18 +324,17 @@
       body {
         font-size: 12px;
       }
-      .name {
-        font-size: 28px;
-        letter-spacing: 1px;
+      .portfolio-text {
+        font-size: 48px;
+        letter-spacing: 6px;
       }
-      .cursor {
-        height: 26px;
+      .subtitle {
+        font-size: 16px;
+        letter-spacing: 4px;
       }
-      .title {
-        font-size: 14px;
-      }
-      .greeting, .loading-lines, .code-line {
-        font-size: 12px;
+      .glow-effect {
+        width: 200px;
+        height: 200px;
       }
     }
   </style>
@@ -195,91 +342,92 @@
 <body>
   <!-- Splash Screen -->
   <div id="splash-screen">
+    <canvas id="stars-canvas"></canvas>
     <div class="intro-container">
-      <div class="greeting">&gt; Inicializando sistema...</div>
-      
-      <div class="loading-lines">
-        <div id="line1">[ + ] Computer Engineer - UFPB</div>
-        <div id="line2">[ + ] Full Stack Developer</div>
-        <div id="line3">[ + ] Cross-platform Development</div>
-        <div id="line4">[ + ] AI Applications</div>
-        <div id="line5">[ + ] UI/UX Design</div>
-      </div>
-      
-      <h1 class="name">
-        <span>G</span><span>e</span><span>a</span><span>n</span><span> </span><span>J</span><span>r</span><span>.</span><span class="cursor"></span>
+      <div class="glow-effect glow-1"></div>
+      <div class="glow-effect glow-2"></div>
+      <h1 class="portfolio-text">
+        <span>P</span><span>O</span><span>R</span><span>T</span><span>I</span><span>F</span><span>O</span><span>L</span><span>I</span><span>O</span>
       </h1>
-      <p class="title">Computer Engineer</p>
-      <div class="code-line">
-        <span class="code-comment">// Bem-vindo ao portfólio</span>
-      </div>
+      <div class="underline"></div>
+      <p class="subtitle">GEAN JR.</p>
     </div>
   </div>
+  
+  <script>
+    // Create galaxy starfield
+    const canvas = document.getElementById('stars-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
+    const stars = [];
+    const galaxyColors = [
+      'rgba(139, 92, 246, ',  // purple
+      'rgba(236, 72, 153, ',  // pink
+      'rgba(59, 130, 246, ',  // blue
+      'rgba(6, 182, 212, ',   // cyan
+      'rgba(168, 85, 247, ',  // light purple
+      'rgba(255, 255, 255, '  // white
+    ];
+    
+    for (let i = 0; i < 200; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        radius: Math.random() * 2 + 0.5,
+        speed: Math.random() * 0.5 + 0.1,
+        opacity: Math.random(),
+        color: galaxyColors[Math.floor(Math.random() * galaxyColors.length)]
+      });
+    }
+    
+    function animateStars() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      stars.forEach(star => {
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        ctx.fillStyle = star.color + star.opacity + ')';
+        ctx.shadowBlur = 15;
+        ctx.shadowColor = star.color + '0.8)';
+        ctx.fill();
+        
+        star.opacity += star.speed * 0.02;
+        if (star.opacity > 1 || star.opacity < 0) star.speed *= -1;
+      });
+      requestAnimationFrame(animateStars);
+    }
+    animateStars();
+    
+    window.addEventListener('resize', function() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  </script>
   
   <script src="flutter_bootstrap.js" async></script>
   
   <script>
-    // Show loading lines sequentially
-    const lines = ['line1', 'line2', 'line3', 'line4', 'line5'];
-    lines.forEach(function(lineId, index) {
+    // Animate PORTFOLIO letters
+    const letters = document.querySelectorAll('.portfolio-text span');
+    const underline = document.querySelector('.underline');
+    const subtitle = document.querySelector('.subtitle');
+    
+    letters.forEach(function(letter, index) {
       setTimeout(function() {
-        // Add success check to previous line
-        if (index > 0) {
-          const prevLine = document.getElementById(lines[index - 1]);
-          if (prevLine) {
-            prevLine.classList.add('success');
-            const text = prevLine.textContent;
-            prevLine.textContent = text.replace('[ + ]', '[ ✓ ]');
-          }
-        }
-        
-        // Show current line
-        const line = document.getElementById(lineId);
-        if (line) {
-          line.style.transition = 'opacity 0.2s ease-out';
-          line.style.opacity = '1';
-        }
-      }, 200 + (index * 300)); // 300ms between each line
+        letter.style.animation = 'letterPop 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards';
+      }, index * 80);
     });
     
-    // Typewriter effect for name - starts after loading lines
-    const nameLetters = document.querySelectorAll('.name > span:not(.cursor)');
-    const cursor = document.querySelector('.name .cursor');
-    const title = document.querySelector('.title');
-    const codeLine = document.querySelector('.code-line');
-    
-    // Start name animation after loading lines
     setTimeout(function() {
-      // Add success check to last line before name appears
-      const lastLine = document.getElementById('line5');
-      if (lastLine) {
-        lastLine.classList.add('success');
-        const text = lastLine.textContent;
-        lastLine.textContent = text.replace('[ + ]', '[ ✓ ]');
-      }
-      
-      nameLetters.forEach(function(letter, index) {
-        setTimeout(function() {
-          letter.style.opacity = '1';
-          letter.style.transition = 'opacity 0.08s ease-out';
-        }, index * 60); // 60ms delay between letters
-      });
-      
-      // Show cursor
-      setTimeout(function() {
-        if (cursor) cursor.style.opacity = '1';
-      }, (nameLetters.length * 60) + 100);
-      
-      // Show title
-      setTimeout(function() {
-        title.style.animation = 'fadeIn 0.4s ease-out forwards';
-      }, (nameLetters.length * 60) + 250);
-      
-      // Show code line
-      setTimeout(function() {
-        codeLine.style.animation = 'fadeIn 0.4s ease-out forwards';
-      }, (nameLetters.length * 60) + 450);
-    }, 1700); // Start after all loading lines (200 + 5*300 = 1700ms)
+      underline.style.transition = 'width 0.8s ease-out';
+      underline.style.width = '80%';
+    }, letters.length * 80 + 200);
+    
+    setTimeout(function() {
+      subtitle.style.transition = 'opacity 0.6s ease-out';
+      subtitle.style.opacity = '1';
+    }, letters.length * 80 + 600);
   </script>
   
   <script>
@@ -289,23 +437,24 @@
       if (splashRemoved) return;
       splashRemoved = true;
       
+      console.log('Removing splash screen - Flutter is ready!');
       const splash = document.getElementById('splash-screen');
       if (splash) {
+        splash.classList.add('fade-out');
         setTimeout(function() {
-          splash.classList.add('fade-out');
-          setTimeout(function() {
-            splash.remove();
-            document.body.style.overflow = 'auto';
-          }, 500);
-        }, 600); // Wait only 600ms for animation to complete
+          splash.remove();
+          document.body.style.overflow = 'auto';
+        }, 500);
       }
     }
     
     // Wait for window load
     window.addEventListener('load', function() {
-      // Check every 150ms if Flutter has rendered content
+      console.log('Window loaded, checking for Flutter...');
+      
+      // Check every 50ms if Flutter has rendered content
       let checkCount = 0;
-      const maxChecks = 40; // 6 seconds max
+      const maxChecks = 100;
       
       const checkInterval = setInterval(function() {
         checkCount++;
@@ -320,16 +469,23 @@
                           (flutterView && flutterView.children.length > 0) ||
                           (semantics);
         
-        if (hasContent || checkCount >= maxChecks) {
+        if (hasContent) {
+          console.log('Flutter content detected! Check count: ' + checkCount);
           clearInterval(checkInterval);
-          // Remove splash quickly
-          setTimeout(removeSplash, 200);
+          removeSplash();
+        } else if (checkCount >= maxChecks) {
+          console.log('Max checks reached, removing splash anyway');
+          clearInterval(checkInterval);
+          removeSplash();
         }
-      }, 150);
+      }, 50);
     });
     
-    // Absolute fallback - 7 seconds max
-    setTimeout(removeSplash, 7000);
+    // Absolute fallback - 5 seconds max
+    setTimeout(function() {
+      console.log('5 second fallback triggered');
+      removeSplash();
+    }, 5000);
   </script>
 </body>
 </html>
