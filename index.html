@@ -31,8 +31,305 @@
 
   <title>portifolio</title>
   <link rel="manifest" href="manifest.json">
+  
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      font-family: 'Courier New', 'Consolas', 'Monaco', monospace;
+      font-size: 14px;
+    }
+    
+    #splash-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #10131a;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      opacity: 1;
+      transition: opacity 0.5s ease-out;
+    }
+    
+    #splash-screen.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+    
+    .intro-container {
+      text-align: center;
+      position: relative;
+      width: 90%;
+      max-width: 600px;
+    }
+    
+    .greeting {
+      font-family: 'Courier New', 'Consolas', 'Monaco', monospace;
+      color: #a9c7ff;
+      font-size: 14px;
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeIn 0.3s ease-out forwards;
+      font-weight: normal;
+    }
+    
+    .loading-lines {
+      font-family: 'Courier New', 'Consolas', 'Monaco', monospace;
+      color: #8b919f;
+      font-size: 14px;
+      text-align: left;
+      margin: 20px 0;
+      line-height: 1.8;
+      font-weight: normal;
+    }
+    
+    .loading-lines div {
+      opacity: 0;
+      margin: 4px 0;
+    }
+    
+    .success {
+      color: #4caf50;
+    }
+    
+    .name {
+      font-family: 'Courier New', 'Consolas', 'Monaco', monospace;
+      font-size: 42px;
+      font-weight: bold;
+      color: #f0b0ff;
+      margin: 20px 0 10px 0;
+      opacity: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 55px;
+      letter-spacing: 2px;
+    }
+    
+    .name span {
+      display: inline-block;
+      opacity: 0;
+    }
+    
+    .title {
+      font-family: 'Courier New', 'Consolas', 'Monaco', monospace;
+      color: #aec7f7;
+      font-size: 16px;
+      font-weight: normal;
+      opacity: 0;
+    }
+    
+    .cursor {
+      display: inline-block;
+      width: 2px;
+      height: 40px;
+      background: #a9c7ff;
+      margin-left: 8px;
+      animation: blink 1s step-end infinite;
+      opacity: 0;
+    }
+    
+    .code-line {
+      font-family: 'Courier New', 'Consolas', 'Monaco', monospace;
+      color: #8b919f;
+      font-size: 14px;
+      text-align: center;
+      margin-top: 15px;
+      opacity: 0;
+      font-weight: normal;
+    }
+    
+    .code-comment {
+      color: #8b919f;
+    }
+    
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes blink {
+      50% {
+        opacity: 0;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      body {
+        font-size: 12px;
+      }
+      .name {
+        font-size: 28px;
+        letter-spacing: 1px;
+      }
+      .cursor {
+        height: 26px;
+      }
+      .title {
+        font-size: 14px;
+      }
+      .greeting, .loading-lines, .code-line {
+        font-size: 12px;
+      }
+    }
+  </style>
 </head>
 <body>
+  <!-- Splash Screen -->
+  <div id="splash-screen">
+    <div class="intro-container">
+      <div class="greeting">&gt; Inicializando sistema...</div>
+      
+      <div class="loading-lines">
+        <div id="line1">[ + ] Computer Engineer - UFPB</div>
+        <div id="line2">[ + ] Full Stack Developer</div>
+        <div id="line3">[ + ] Cross-platform Development</div>
+        <div id="line4">[ + ] AI Applications</div>
+        <div id="line5">[ + ] UI/UX Design</div>
+      </div>
+      
+      <h1 class="name">
+        <span>G</span><span>e</span><span>a</span><span>n</span><span> </span><span>J</span><span>r</span><span>.</span><span class="cursor"></span>
+      </h1>
+      <p class="title">Computer Engineer</p>
+      <div class="code-line">
+        <span class="code-comment">// Bem-vindo ao portfólio</span>
+      </div>
+    </div>
+  </div>
+  
   <script src="flutter_bootstrap.js" async></script>
+  
+  <script>
+    // Show loading lines sequentially
+    const lines = ['line1', 'line2', 'line3', 'line4', 'line5'];
+    lines.forEach(function(lineId, index) {
+      setTimeout(function() {
+        // Add success check to previous line
+        if (index > 0) {
+          const prevLine = document.getElementById(lines[index - 1]);
+          if (prevLine) {
+            prevLine.classList.add('success');
+            const text = prevLine.textContent;
+            prevLine.textContent = text.replace('[ + ]', '[ ✓ ]');
+          }
+        }
+        
+        // Show current line
+        const line = document.getElementById(lineId);
+        if (line) {
+          line.style.transition = 'opacity 0.2s ease-out';
+          line.style.opacity = '1';
+        }
+      }, 200 + (index * 300)); // 300ms between each line
+    });
+    
+    // Typewriter effect for name - starts after loading lines
+    const nameLetters = document.querySelectorAll('.name > span:not(.cursor)');
+    const cursor = document.querySelector('.name .cursor');
+    const title = document.querySelector('.title');
+    const codeLine = document.querySelector('.code-line');
+    
+    // Start name animation after loading lines
+    setTimeout(function() {
+      // Add success check to last line before name appears
+      const lastLine = document.getElementById('line5');
+      if (lastLine) {
+        lastLine.classList.add('success');
+        const text = lastLine.textContent;
+        lastLine.textContent = text.replace('[ + ]', '[ ✓ ]');
+      }
+      
+      nameLetters.forEach(function(letter, index) {
+        setTimeout(function() {
+          letter.style.opacity = '1';
+          letter.style.transition = 'opacity 0.08s ease-out';
+        }, index * 60); // 60ms delay between letters
+      });
+      
+      // Show cursor
+      setTimeout(function() {
+        if (cursor) cursor.style.opacity = '1';
+      }, (nameLetters.length * 60) + 100);
+      
+      // Show title
+      setTimeout(function() {
+        title.style.animation = 'fadeIn 0.4s ease-out forwards';
+      }, (nameLetters.length * 60) + 250);
+      
+      // Show code line
+      setTimeout(function() {
+        codeLine.style.animation = 'fadeIn 0.4s ease-out forwards';
+      }, (nameLetters.length * 60) + 450);
+    }, 1700); // Start after all loading lines (200 + 5*300 = 1700ms)
+  </script>
+  
+  <script>
+    let splashRemoved = false;
+    
+    function removeSplash() {
+      if (splashRemoved) return;
+      splashRemoved = true;
+      
+      const splash = document.getElementById('splash-screen');
+      if (splash) {
+        setTimeout(function() {
+          splash.classList.add('fade-out');
+          setTimeout(function() {
+            splash.remove();
+            document.body.style.overflow = 'auto';
+          }, 500);
+        }, 600); // Wait only 600ms for animation to complete
+      }
+    }
+    
+    // Wait for window load
+    window.addEventListener('load', function() {
+      // Check every 150ms if Flutter has rendered content
+      let checkCount = 0;
+      const maxChecks = 40; // 6 seconds max
+      
+      const checkInterval = setInterval(function() {
+        checkCount++;
+        
+        // Check multiple Flutter elements
+        const glassPane = document.querySelector('flt-glass-pane');
+        const flutterView = document.querySelector('flutter-view');
+        const semantics = document.querySelector('flt-semantics-host');
+        
+        // If any Flutter element has meaningful content
+        const hasContent = (glassPane && glassPane.children.length > 0) ||
+                          (flutterView && flutterView.children.length > 0) ||
+                          (semantics);
+        
+        if (hasContent || checkCount >= maxChecks) {
+          clearInterval(checkInterval);
+          // Remove splash quickly
+          setTimeout(removeSplash, 200);
+        }
+      }, 150);
+    });
+    
+    // Absolute fallback - 7 seconds max
+    setTimeout(removeSplash, 7000);
+  </script>
 </body>
 </html>
